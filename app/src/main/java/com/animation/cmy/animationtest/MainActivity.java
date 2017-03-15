@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements AnimationAdapter.
                 Log.d("cmy", "ITEM CLICK");
                 selectOptions = mAdapter.getSelectOptions();
                 people = peopleList.get(position);
-                if (selectOptions.size() > 0) { // 多选模式
+                if (selectOptions.size() > 0) { // 进入多选模式
                     if (selectOptions.contains(people.getName())) {
                         selectOptions.remove(people.getName());
                         mAdapter.setSelectOptions(selectOptions);
