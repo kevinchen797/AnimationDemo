@@ -28,11 +28,6 @@ public class AnimationAdapter extends BaseAdapter {
     private Set<String> selectOptions = new HashSet<>();
     private Set<Integer> positionSet = new HashSet<>();
 
-    private int centerX;
-    private int centerY;
-    private int duration = 200;
-    private int depth = 200;
-
     public AnimationAdapter(Context context, List<People> peopleList) {
         this.peopleList = peopleList;
         mContext = context;
@@ -74,17 +69,13 @@ public class AnimationAdapter extends BaseAdapter {
                 holder.ivPhoto.setImageResource(R.drawable.groups_user_select);
             } else {//未播放过开始动画
                 //TODO 播放开始动画
-//                selectAnimation();
-                Rotate3dAnimation openRotateAnimation = initOpenAnim(holder.ivPhoto);
-                holder.ivPhoto.startAnimation(openRotateAnimation);
+                AnimationTool.INSTANCE.startSelectAnimation(holder.ivPhoto, R.drawable.groups_user_select);
                 positionSet.add(position);
             }
         } else {//未选中
             if (positionSet.contains(position)) {//未播放过结束动画
 //                // TODO 播放结束动画
-//                CancleAnimation();
-                Rotate3dAnimation closeRorateAnimation = initCloseAnim(holder.ivPhoto);
-                holder.ivPhoto.startAnimation(closeRorateAnimation);
+                AnimationTool.INSTANCE.startCancleAnimation(holder.ivPhoto, R.drawable.groups_user);
                 positionSet.remove(position);
             } else {//播放过结束动画
                 holder.ivPhoto.setImageResource(R.drawable.groups_user);
@@ -144,70 +135,6 @@ public class AnimationAdapter extends BaseAdapter {
 
     public interface ListViewCheckListener {
         void ListViewCheckListener(Set<String> selectOptions);
-    }
-
-
-    private Rotate3dAnimation initOpenAnim(final ImageView img) {
-        centerX = img.getWidth()/2;
-        centerY = img.getHeight()/2;
-        Rotate3dAnimation openRotateAnimation = new Rotate3dAnimation(0, 90, centerX, centerY, depth, true);
-        openRotateAnimation.setDuration(duration);
-        openRotateAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
-        openRotateAnimation.setFillAfter(false);
-        openRotateAnimation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                img.setImageResource(R.drawable.groups_user_select);
-                Rotate3dAnimation endAnim = new Rotate3dAnimation(270, 360, centerX, centerY, depth, false);
-                endAnim.setDuration(duration);
-                endAnim.setInterpolator(new DecelerateInterpolator());
-                endAnim.setFillAfter(true);
-                img.startAnimation(endAnim);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-        return openRotateAnimation;
-    }
-
-    private Rotate3dAnimation initCloseAnim(final ImageView img) {
-        centerX = img.getWidth()/2;
-        centerY = img.getHeight()/2;
-        Rotate3dAnimation closeRorateAnimation = new Rotate3dAnimation(360, 270, centerX, centerY, depth, true);
-        closeRorateAnimation.setDuration(duration);
-        closeRorateAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
-        closeRorateAnimation.setFillAfter(false);
-        closeRorateAnimation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                img.setImageResource(R.drawable.groups_user);
-                Rotate3dAnimation endAnim = new Rotate3dAnimation(90, 0, centerX, centerY, depth, false);
-                endAnim.setDuration(duration);
-                endAnim.setInterpolator(new DecelerateInterpolator());
-                endAnim.setFillAfter(true);
-                img.startAnimation(endAnim);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-
-        return closeRorateAnimation;
     }
 
 
